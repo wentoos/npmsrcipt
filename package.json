@@ -1,0 +1,53 @@
+{
+  "name": "wentoo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "config": {
+    "port": 3001
+  },
+  "scripts": {
+    "lint": "npm-run-all --parallel lint:*",
+    "lint:js": "eslint *.js",
+    "lint:js:fix": "npm run lint:js -- --fix",
+    "lint:css": "stylelint *.less",
+    "pretest": "npm run lint",
+    "test": "cross-env NODE_ENV=test mocha ./",
+    "cover": "nyc --reporter=html npm test",
+    "cover:cleanup": "rimraf coverage && rimraf .nyc_output && rimraf coverage_archive",
+    "cover:archive": "cross-var \"make-dir coverage_archive/$npm_package_version && cp ./coverage/* ./coverage_archive/$npm_package_version\"",
+    "cover:serve": "cross-var http-server coverage_archive/$npm_package_version -p $npm_package_config_port",
+    "cover:open": "cross-var opn http://localhost:$npm_package_config_port",
+    "precover": "npm run cover:cleanup",
+    "postcover": "npm-run-all cover:archive --parallel cover:serve cover:open"
+  },
+  "nyc": {
+    "exclude": [
+      "**/*.spec.js",
+      ".*.js"
+    ]
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chalk": "^2.3.2",
+    "cpr": "^3.0.1",
+    "cross-env": "^5.1.4",
+    "cross-var": "^1.1.0",
+    "eslint": "^4.19.1",
+    "eslint-plugin-react": "^7.7.0",
+    "http-server": "^0.11.1",
+    "jsonlint": "^1.6.3",
+    "make-dir-cli": "^1.0.0",
+    "markdownlint-cli": "^0.8.1",
+    "mocha": "^5.0.5",
+    "npm-run-all": "^4.1.2",
+    "nyc": "^11.6.0",
+    "opn-cli": "^3.1.0",
+    "rimraf": "^2.6.2",
+    "shelljs": "^0.8.1",
+    "stylelint": "^9.2.0",
+    "stylelint-config-standard": "^18.2.0"
+  },
+  "author": "",
+  "license": "ISC"
+}
